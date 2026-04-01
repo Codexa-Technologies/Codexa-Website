@@ -9,9 +9,9 @@ import {
   FaSass, FaTerminal, FaWindows, FaApple, FaAndroid, FaFire,
   FaLightbulb, FaChartBar, FaRobot, FaCloud, FaLock, FaKey,
   FaShieldAlt, FaConnectdevelop, FaLeaf, FaWifi, FaMarkdown,
-  FaNetlify, FaMicrosoft, FaGoogle, FaStripe, FaPaypal,
-  FaRust, FaBootstrap, FaWrench, FaGear, FaPalette, FaClipboard,
-  FaBolt, FaFolderOpen, FaFileCode, FaLayerGroup, FaSync
+  FaMicrosoft, FaGoogle, FaStripe, FaPaypal,
+  FaRust, FaBootstrap, FaWrench, FaPalette,
+  FaBolt, FaSync
 } from 'react-icons/fa';
 
 const Hero = () => {

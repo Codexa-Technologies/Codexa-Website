@@ -58,7 +58,7 @@ const WhyChooseUs = () => {
   };
 
   return (
-    <section id="why-us" className="relative py-10 md:py-12 bg-black overflow-hidden">
+    <section id="why-us" className="relative py-10 md:py-12 bg-black overflow-hidden scroll-mt-24">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div

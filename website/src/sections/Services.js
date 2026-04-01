@@ -48,30 +48,11 @@ const Services = () => {
     },
   ];
 
-  const container = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
   // Triple services for seamless infinite loop
   const scrollServices = [...services, ...services, ...services];
 
   return (
-    <section id="services" className="relative py-10 bg-gradient-to-b from-black to-black/80 overflow-hidden">
+    <section id="services" className="relative py-10 bg-gradient-to-b from-black to-black/80 overflow-hidden scroll-mt-24">
       <style>{`
         .hide-scrollbar {
           -ms-overflow-style: none;

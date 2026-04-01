@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import aboutAnimation from '../assets/About.json';
-import { ArrowRight, Code, Palette, Cloud } from 'lucide-react';
+import { Code, Palette, Cloud } from 'lucide-react';
 
 const About = () => {
   const features = [
@@ -44,7 +44,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="relative py-20 bg-gradient-to-br from-black via-black to-blue-900/10 overflow-hidden">
+    <section id="about" className="relative py-20 bg-gradient-to-br from-black via-black to-blue-900/10 overflow-hidden scroll-mt-24">
       {/* Animated Background Blobs */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div

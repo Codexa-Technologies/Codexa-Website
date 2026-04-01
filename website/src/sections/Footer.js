@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaArrowRight } from 'react-icons/fa';
+import { FaLinkedin, FaFacebook, FaTiktok, FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [email, setEmail] = useState('');
 
   const footerLinks = {
     Services: ['Web App Development', 'Mobile App Development', 'UI/UX Design', 'API & Backend Development'],
@@ -12,26 +11,11 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: FaGithub, href: '#', label: 'GitHub' },
-    { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
-    { icon: FaTwitter, href: '#', label: 'Twitter' },
-    { icon: FaFacebook, href: '#', label: 'Facebook' },
+    { icon: FaLinkedin, href: 'https://www.linkedin.com/company/codexatechnologies/', label: 'LinkedIn' },
+    { icon: FaFacebook, href: 'https://www.facebook.com/share/1B9eLmQQw9/?mibextid=LQQJ4d', label: 'Facebook' },
+    { icon: FaTiktok, href: 'https://www.tiktok.com/@techcodexa?_r=1&_t=ZS-95B5oPDIYDp', label: 'TikTok' },
+    { icon: FaWhatsapp, href: 'https://wa.me/94750326062', label: 'WhatsApp' },
   ];
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    setEmail('');
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },

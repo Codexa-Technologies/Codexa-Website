@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaPaperPlane } from 'react-icons/fa';
 import emailAnimation from '../assets/Email.json';
+import emailjs from '@emailjs/browser';
 
 const CTA = () => {
+  useEffect(() => {
+    // Initialize EmailJS with your public key
+    emailjs.init('ZqCyiG0JlbBELnXre');
+  }, []);
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     email: '',
+    company: '',
     message: '',
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const [errors, setErrors] = useState({});
 
   const contactInfo = [
     {
@@ -38,26 +47,98 @@ const CTA = () => {
     });
   };
 
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    // Phone validation (optional but if provided, validate format)
+    if (formData.phone.trim()) {
+      if (!/^[\d\s\-+()]{7,}$/.test(formData.phone)) {
+        newErrors.phone = 'Please enter a valid phone number';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm()) {
+      showToast('❌ Please fix the errors in the form', 'error');
+      return;
+    }
+
     setLoading(true);
     
     try {
-      // Simulate API call
-      setTimeout(() => {
-        setSuccess(true);
-        setFormData({ name: '', email: '', message: '' });
-        setTimeout(() => setSuccess(false), 3000);
-        setLoading(false);
-      }, 1000);
-    } catch (error) {
-      console.error('Error:', error);
+      await emailjs.send(
+        'service_143xk7d', // Service ID
+        'template_ntx6a7m', // Template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          from_phone: formData.phone,
+          from_company: formData.company,
+          message: formData.message,
+          to_email: 'technologiescodexa@gmail.com',
+        }
+      );
+      
+      setSuccess(true);
+      setFormData({ name: '', phone: '', email: '', company: '', message: '' });
+      setErrors({});
+      showToast('✅ Message sent successfully!', 'success');
+      setTimeout(() => setSuccess(false), 3000);
       setLoading(false);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setLoading(false);
+      showToast('❌ Error sending message. Please try again.', 'error');
     }
   };
 
   return (
-    <section id="contact" className="relative py-16 md:py-20 bg-black overflow-hidden">
+    <section id="contact" className="relative py-16 md:py-20 bg-black overflow-hidden scroll-mt-24">
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-lg font-semibold shadow-lg ${
+              toast.type === 'success' 
+                ? 'bg-green-600 text-white' 
+                : 'bg-red-600 text-white'
+            }`}
+            initial={{ opacity: 0, x: 400 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 400 }}
+            transition={{ duration: 0.3 }}
+          >
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -123,7 +204,8 @@ const CTA = () => {
                 onSubmit={handleSubmit}
                 className="bg-gradient-to-br from-gray-900/60 to-black/60 border border-blue-500/20 rounded-2xl p-8 backdrop-blur-sm h-full"
               >
-                <div className="grid grid-cols-1 gap-6 mb-6">
+                {/* Name and Phone Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Name Input */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
@@ -136,11 +218,39 @@ const CTA = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-blue-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors focus:shadow-none"
+                      className={`w-full px-4 py-3 bg-gray-900/50 border rounded-lg text-white placeholder-gray-500 focus:outline-none transition-colors focus:shadow-none ${
+                        errors.name 
+                          ? 'border-red-500/50 focus:border-red-500/50' 
+                          : 'border-blue-500/20 focus:border-blue-500/50'
+                      }`}
                       placeholder="Your name"
                     />
+                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
                   </div>
 
+                  {/* Phone Input */}
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 bg-gray-900/50 border rounded-lg text-white placeholder-gray-500 focus:outline-none transition-colors focus:shadow-none ${
+                        errors.phone 
+                          ? 'border-red-500/50 focus:border-red-500/50' 
+                          : 'border-blue-500/20 focus:border-blue-500/50'
+                      }`}
+                      placeholder="Your phone number"
+                    />
+                    {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone}</p>}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Email Input */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
@@ -153,8 +263,29 @@ const CTA = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-blue-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors focus:shadow-none"
+                      className={`w-full px-4 py-3 bg-gray-900/50 border rounded-lg text-white placeholder-gray-500 focus:outline-none transition-colors focus:shadow-none ${
+                        errors.email 
+                          ? 'border-red-500/50 focus:border-red-500/50' 
+                          : 'border-blue-500/20 focus:border-blue-500/50'
+                      }`}
                       placeholder="your@email.com"
+                    />
+                    {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                  </div>
+
+                  {/* Company Input (Optional) */}
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium text-white mb-2">
+                      Company <span className="text-gray-400 text-xs">(Optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="company"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-gray-900/50 border border-blue-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors focus:shadow-none"
+                      placeholder="Your company name"
                     />
                   </div>
                 </div>
@@ -169,9 +300,12 @@ const CTA = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    required
                     rows="3"
-                    className="w-full px-4 py-3 bg-gray-900/50 border border-blue-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors resize-none focus:shadow-none"
+                    className={`w-full px-4 py-3 bg-gray-900/50 border rounded-lg text-white placeholder-gray-500 focus:outline-none transition-colors resize-none focus:shadow-none ${
+                      errors.message 
+                        ? 'border-red-500/50 focus:border-red-500/50' 
+                        : 'border-blue-500/20 focus:border-blue-500/50'
+                    }`}
                     placeholder="Tell us about your project..."
                   />
                 </div>
