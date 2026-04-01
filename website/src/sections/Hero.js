@@ -1,10 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
+import { 
+  FaReact, FaNode, FaPython, FaDatabase, FaAws, FaDocker,
+  FaGit, FaJsSquare, FaJava, FaLinux, FaGithub, FaCss3,
+  FaHtml5, FaAngular, FaVuejs, FaPhp, FaNpm, FaYarn,
+  FaBitbucket, FaGitlab, FaServer, FaCode, FaCogs, FaMobile,
+  FaSass, FaTerminal, FaWindows, FaApple, FaAndroid, FaFire,
+  FaLightbulb, FaChartBar, FaRobot, FaCloud, FaLock, FaKey,
+  FaShieldAlt, FaConnectdevelop, FaLeaf, FaWifi, FaMarkdown,
+  FaNetlify, FaMicrosoft, FaGoogle, FaStripe, FaPaypal,
+  FaRust, FaBootstrap, FaWrench, FaGear, FaPalette, FaClipboard,
+  FaBolt, FaFolderOpen, FaFileCode, FaLayerGroup, FaSync
+} from 'react-icons/fa';
 
 const Hero = () => {
   const [videoError, setVideoError] = useState(false);
   const [heroVideo, setHeroVideo] = useState(null);
+
+  // Tech stack for carousel - 50+ icons
+  const techStack = [
+    { icon: FaReact, label: 'React', color: '#61DAFB' },
+    { icon: FaNode, label: 'Node.js', color: '#68A063' },
+    { icon: FaPython, label: 'Python', color: '#3776AB' },
+    { icon: FaDatabase, label: 'Database', color: '#336791' },
+    { icon: FaAws, label: 'AWS', color: '#FF9900' },
+    { icon: FaDocker, label: 'Docker', color: '#2496ED' },
+    { icon: FaGit, label: 'Git', color: '#F1502F' },
+    { icon: FaJsSquare, label: 'JavaScript', color: '#F7DF1E' },
+    { icon: FaJava, label: 'Java', color: '#007396' },
+    { icon: FaLinux, label: 'Linux', color: '#FCC624' },
+    { icon: FaGithub, label: 'GitHub', color: '#FFFFFF' },
+    { icon: FaCss3, label: 'CSS3', color: '#1572B6' },
+    { icon: FaHtml5, label: 'HTML5', color: '#E34C26' },
+    { icon: FaAngular, label: 'Angular', color: '#DD0031' },
+    { icon: FaVuejs, label: 'Vue.js', color: '#4FC08D' },
+    { icon: FaPhp, label: 'PHP', color: '#777BB4' },
+    { icon: FaNpm, label: 'npm', color: '#CB3837' },
+    { icon: FaYarn, label: 'Yarn', color: '#2C8EBB' },
+    { icon: FaBitbucket, label: 'Bitbucket', color: '#0052CC' },
+    { icon: FaGitlab, label: 'GitLab', color: '#FCA121' },
+    { icon: FaServer, label: 'Server', color: '#4B8BBE' },
+    { icon: FaCode, label: 'Code', color: '#7F8C8D' },
+    { icon: FaCogs, label: 'Services', color: '#95A5A6' },
+    { icon: FaMobile, label: 'Mobile', color: '#555555' },
+    { icon: FaSass, label: 'Sass', color: '#CC6699' },
+    { icon: FaTerminal, label: 'Terminal', color: '#000000' },
+    { icon: FaWindows, label: 'Windows', color: '#0078D4' },
+    { icon: FaApple, label: 'macOS', color: '#555555' },
+    { icon: FaAndroid, label: 'Android', color: '#3DDC84' },
+    { icon: FaFire, label: 'Firebase', color: '#FFCA28' },
+    { icon: FaLightbulb, label: 'Innovation', color: '#F39C12' },
+    { icon: FaChartBar, label: 'Analytics', color: '#3498DB' },
+    { icon: FaRobot, label: 'AI/ML', color: '#9B59B6' },
+    { icon: FaCloud, label: 'Cloud', color: '#64B5F6' },
+    { icon: FaLock, label: 'Security', color: '#E74C3C' },
+    { icon: FaKey, label: 'Auth', color: '#C0392B' },
+    { icon: FaShieldAlt, label: 'Protection', color: '#27AE60' },
+    { icon: FaConnectdevelop, label: 'API', color: '#16A085' },
+    { icon: FaLeaf, label: 'Express', color: '#000000' },
+    { icon: FaWifi, label: 'WebSocket', color: '#4ECDC4' },
+    { icon: FaMarkdown, label: 'Markdown', color: '#083FA1' },
+    { icon: FaMicrosoft, label: 'Azure', color: '#0078D4' },
+    { icon: FaGoogle, label: 'Google Cloud', color: '#4285F4' },
+    { icon: FaStripe, label: 'Stripe', color: '#008CDD' },
+    { icon: FaPaypal, label: 'PayPal', color: '#003087' },
+    { icon: FaRust, label: 'Rust', color: '#CE422B' },
+    { icon: FaBootstrap, label: 'Bootstrap', color: '#7952B3' },
+    { icon: FaWrench, label: 'Tools', color: '#FF6B6B' },
+    { icon: FaBolt, label: 'Performance', color: '#FFD700' },
+    { icon: FaPalette, label: 'Design', color: '#FF69B4' },
+    { icon: FaSync, label: 'Integration', color: '#1ABC9C' },
+  ];
+
+  const [currentTechIndex, setCurrentTechIndex] = useState(0);
+
+  // Auto-swipe tech stack
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTechIndex((prev) => (prev + 1) % techStack.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [techStack.length]);
 
   useEffect(() => {
     // Try to import video from assets, fallback to gradient if not available
@@ -144,6 +222,34 @@ const Hero = () => {
           </div>
           
         </div>
+        
+      </div>
+
+      {/* Tech Stack Carousel - Bottom Right */}
+      <div className="absolute bottom-4 right-4 z-20">
+        <motion.div
+          className="w-16 h-16 flex items-center justify-center bg-black rounded-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.8 }}
+        >
+          {/* Tech Icon Display */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentTechIndex}
+              className="w-full h-full flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+            >
+              {React.createElement(techStack[currentTechIndex].icon, {
+                className: 'text-2xl',
+                style: { color: techStack[currentTechIndex].color }
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

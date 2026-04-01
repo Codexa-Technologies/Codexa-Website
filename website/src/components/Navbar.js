@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Lottie from 'lottie-react';
-import { FaWhatsapp } from 'react-icons/fa';
-import codingAnimation from '../assets/qntm.json';
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,17 +52,20 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Coding Animation */}
-          <motion.div
-            className="hidden md:flex w-20 h-20"
-            whileHover={{ scale: 1.1 }}
+          {/* WhatsApp Us Button */}
+          <motion.a
+            href="https://wa.me/94750326062"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-2 px-4 lg:px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full font-semibold text-xs lg:text-sm whitespace-nowrap transition-all duration-300"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: '0 0 30px rgba(34, 197, 94, 0.4)' 
+            }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Lottie 
-              animationData={codingAnimation} 
-              loop={true}
-              className="w-full h-full"
-            />
-          </motion.div>
+            WhatsApp Us
+          </motion.a>
 
           {/* Mobile Menu Button */}
           <motion.button
@@ -98,22 +99,19 @@ const Navbar = () => {
                 {item}
               </motion.button>
             ))}
+            <motion.a
+              href="https://wa.me/94750326062"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold mt-3 text-center text-sm"
+              whileHover={{ scale: 1.02 }}
+            >
+              WhatsApp Us
+            </motion.a>
             
           </div>
         </motion.div>
       </div>
-
-      {/* WhatsApp Chat Bubble */}
-      <motion.a
-        href="https://wa.me/94750326062"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <FaWhatsapp className="text-white text-2xl" />
-      </motion.a>
     </motion.nav>
   );
 };
