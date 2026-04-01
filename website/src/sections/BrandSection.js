@@ -34,7 +34,7 @@ const BrandSection = () => {
   return (
     <section className="relative w-screen h-[600px] bg-black overflow-hidden flex items-center justify-center">
       <motion.div
-        className="w-screen px-0"
+        className="w-full px-4 sm:px-6 md:px-0"
         variants={containerVariant}
         initial="hidden"
         whileInView="visible"
